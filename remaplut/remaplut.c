@@ -57,6 +57,8 @@ bool load_remapping(char *map, FILE *fout)
 
 	for (int i = 0; i < len-1; i++)
 	{
+		//if ((map[i] == ' ') || ((map[i] == '\t')))
+		//	break;
 		int pos = -1;
 		for (int j = 0; j < 65; j++)
 		{
@@ -236,11 +238,12 @@ int main(int argc, char* argv[])
 	if (fout != stdout)
 	{
 		fprintf(fout, "/* %s\n", output_file);
-		fprintf(fout, " *\n * Generated from %s\n", input_file);
-		fprintf(fout, "*\n\n");
+		fprintf(fout, " * Generated from %s\n", input_file);
+		fprintf(fout, " */\n\n");
+		fprintf(fout, "#include <avr/pgmspace.h>\n\n");
 		if (lut_name == NULL)
 			lut_name = "remapped_lut";
-		fprintf(fout, "const uint%u_t %s[] = {\n", output_width, lut_name);
+		fprintf(fout, "const __flash uint%u_t %s[] = {\n", output_width, lut_name);
 	}
 
 	// remap
